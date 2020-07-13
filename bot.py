@@ -2,6 +2,7 @@ from discord import Embed
 from discord.ext import commands
 from pages import character_lookup, location_lookup, npc_lookup
 from pages.page import Page
+from bot_token import token
 import requests
 import sys
 import os
@@ -66,6 +67,18 @@ async def location(ctx, name):
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="Location not found :sob:", value="{} could not be found on the Wiki".format(name))
         await ctx.send(embed=embed)
+
+
+# Error handling for the commands
+@bot.event
+async def on_command_error(error, ctx):
+    if error.command_failed:
+        embed = Embed(title="Command {} failed".format(str(error.command).upper()))
+        embed.add_field(name="Sorry about that", value="Are you sure you typed the command correctly? If you are unsure, "
+                                                       "try entering >help for further information.")
+        await error.send(embed=embed)
     
 
-bot.run('')
+if __name__ == "__main__":
+    # Runs the bot :)
+    bot.run(token)
