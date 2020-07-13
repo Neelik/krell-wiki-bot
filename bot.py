@@ -68,4 +68,4 @@ async def location(ctx, name):
         await ctx.send(embed=embed)
     
 
-bot.run('NzMwMzI0MTE1MjYwNzAyNzQ3.XwV2cw.5OFJh6mgcQpXTP1kGrAyd39P78E')
+bot.run('')
