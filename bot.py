@@ -2,7 +2,6 @@ from discord import Embed
 from discord.ext import commands
 from index import update_index
 from pages.page import Page
-from titlecase import titlecase
 import requests
 import sys
 import os
@@ -34,8 +33,8 @@ async def character(ctx, *name):
     else:
         name = name[0]
 
-    if name in index.indexed_pages:
-        character_page = page_base + titlecase(name.replace(" ", "_").lower())
+    if name.lower() in index.indexed_pages:
+        character_page = page_base + name.replace(" ", "_")
         page = __scrape(character_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
         embed = Embed(title=name)
@@ -56,8 +55,8 @@ async def npc(ctx, *name):
     else:
         name = name[0]
 
-    if name in index.indexed_pages:
-        npc_page = page_base + titlecase(name.replace(" ", "_").lower())
+    if name.lower() in index.indexed_pages:
+        npc_page = page_base + name.replace(" ", "_")
         page = __scrape(npc_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.npc_overview)
         embed = Embed(title=name)
@@ -78,8 +77,8 @@ async def location(ctx, *name):
     else:
         name = name[0]
 
-    if name in index.indexed_pages:
-        location_page = page_base + titlecase(name.replace(" ", "_").lower())
+    if name.lower() in index.indexed_pages:
+        location_page = page_base + name.replace(" ", "_")
         page = __scrape(location_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.location_overview)
         embed = Embed(title=name)
