@@ -17,8 +17,7 @@ page_base = "https://arcadaliam.fandom.com/wiki/"
 wiki_home = "https://arcadaliam.fandom.com/wiki/ArcaDaliam_Wiki"
 search_base = "https://arcadaliam.fandom.com/wiki/Special:Search?query={}&navigationSearch=true"
 
-# index = update_index()
-index = None
+index = update_index()
 
 def __scrape(url):
     entry = requests.get(url)
@@ -38,6 +37,7 @@ async def character(ctx, *name):
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
         embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
+        index = update_index()
         await ctx.send(embed=embed)
     else:
         embed = Embed(title="Oops! Missing Info")
@@ -57,6 +57,7 @@ async def npc(ctx, *name):
         ret_str = str("""```bash\n\"{}\"```""").format(page.npc_overview)
         embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
+        index = update_index()
         await ctx.send(embed=embed)
     else:
         embed = Embed(title="Oops! Missing Info")
@@ -76,6 +77,7 @@ async def location(ctx, *name):
         ret_str = str("""```bash\n\"{}\"```""").format(page.location_overview)
         embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
+        index = update_index()
         await ctx.send(embed=embed)
     else:
         embed = Embed(title="Oops! Missing Info")
