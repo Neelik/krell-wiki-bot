@@ -1,4 +1,4 @@
-from discord import Embed
+from discord import Embed, Colour
 from discord.ext import commands
 from index import update_index
 from pages.page import Page
@@ -42,11 +42,14 @@ async def check(ctx, *name):
     if for_check in index.indexed_pages:
         page_uri = page_base + uri_encoded
         page = __scrape(page_uri)
-        ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
-        embed = Embed(title=name_cased, description=f"[Full Page]({page_uri})")
-        embed.add_field(name="Overview", value=ret_str)
+
+        ret_str = f"[Full Page]({page_uri})\n{page.character_overview}"
+        embed = Embed(title=name_cased, description=f"[Full Page]({page_uri})", color=Colour.dark_teal())
+        embed.add_field(name=name_cased, value=ret_str)
         index = update_index()
+
         await ctx.send(embed=embed)
+
     else:
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="Character not found :sob:", value="{} could not be found on the Wiki".format(name_cased))
