@@ -44,7 +44,7 @@ async def check(ctx, *name):
         page = __scrape(page_uri)
 
         ret_str = f"[Full Page]({page_uri})\n{page.character_overview}"
-        embed = Embed(title=name_cased, description=f"[Full Page]({page_uri})", color=Colour.dark_teal())
+        embed = Embed(title="Arca Daliam Wiki", color=Colour.dark_teal())
         embed.add_field(name=name_cased, value=ret_str)
         index = update_index()
 
