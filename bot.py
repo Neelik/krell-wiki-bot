@@ -2,7 +2,6 @@ from discord import Embed
 from discord.ext import commands
 from pages import character_lookup, location_lookup, npc_lookup
 from pages.page import Page
-from bot_token import token
 import requests
 import sys
 import os
@@ -11,6 +10,7 @@ import os
 sys.path.insert(1, os.getcwd())
 
 bot = commands.Bot(command_prefix=">")
+token = os.getenv("DISCORD_BOT_TOKEN")
 page_base = "https://arcadaliam.fandom.com/wiki/"
 wiki_home = "https://arcadaliam.fandom.com/wiki/ArcaDaliam_Wiki"
 search_base = "https://arcadaliam.fandom.com/wiki/Special:Search?query={}&navigationSearch=true"
