@@ -29,7 +29,7 @@ class Index(object):
     def __clean_text(self, text):
         text_nonum = re.sub(r'\d+', '', text.strip())
         text_nopunct = "".join([char.lower() for char in text_nonum if char not in string.punctuation])
-        cleaned = text_nopunct.strip().title()
+        cleaned = text_nopunct.strip()
         return cleaned
 
 

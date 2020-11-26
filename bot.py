@@ -34,7 +34,7 @@ async def character(ctx, *name):
         name = name[0]
 
     if name in index.indexed_pages:
-        character_page = page_base + name.replace(" ", "_")
+        character_page = page_base + name.replace(" ", "_").lower()
         page = __scrape(character_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
         embed = Embed(title=name)
@@ -56,7 +56,7 @@ async def npc(ctx, *name):
         name = name[0]
 
     if name in index.indexed_pages:
-        npc_page = page_base + name.replace(" ", "_")
+        npc_page = page_base + name.replace(" ", "_").lower()
         page = __scrape(npc_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.npc_overview)
         embed = Embed(title=name)
@@ -78,7 +78,7 @@ async def location(ctx, *name):
         name = name[0]
 
     if name in index.indexed_pages:
-        location_page = page_base + name.replace(" ", "_")
+        location_page = page_base + name.replace(" ", "_").lower()
         page = __scrape(location_page)
         ret_str = str("""```bash\n\"{}\"```""").format(page.location_overview)
         embed = Embed(title=name)
