@@ -30,6 +30,8 @@ async def character(ctx, *name):
     global index
     if len(name) > 1:
         name = " ".join(name)
+    else:
+        name = name[0]
 
     if name in index.indexed_pages:
         character_page = page_base + name.replace(" ", "_")
@@ -50,6 +52,8 @@ async def npc(ctx, *name):
     global index
     if len(name) > 1:
         name = " ".join(name)
+    else:
+        name = name[0]
 
     if name in index.indexed_pages:
         npc_page = page_base + name.replace(" ", "_")
@@ -70,6 +74,8 @@ async def location(ctx, *name):
     global index
     if len(name) > 1:
         name = " ".join(name)
+    else:
+        name = name[0]
 
     if name in index.indexed_pages:
         location_page = page_base + name.replace(" ", "_")
