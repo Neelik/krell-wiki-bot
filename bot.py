@@ -1,10 +1,12 @@
 from discord import Embed
 from discord.ext import commands
-from pages import character_lookup, location_lookup, npc_lookup
+from index import update_index
 from pages.page import Page
 import requests
 import sys
 import os
+
+# from bot_token import token
 
 # Set up the package path for imports to work
 sys.path.insert(1, os.getcwd())
@@ -15,6 +17,9 @@ page_base = "https://arcadaliam.fandom.com/wiki/"
 wiki_home = "https://arcadaliam.fandom.com/wiki/ArcaDaliam_Wiki"
 search_base = "https://arcadaliam.fandom.com/wiki/Special:Search?query={}&navigationSearch=true"
 
+# index = update_index()
+index = None
+
 def __scrape(url):
     entry = requests.get(url)
     page = Page(entry.text)
@@ -22,50 +27,85 @@ def __scrape(url):
 
 
 @bot.command()
-async def character(ctx, name):
-    try:
-        character_page = page_base + character_lookup[name.lower()]
+async def character(ctx, *name):
+    global index
+    if len(name) > 1:
+        name = " ".join(name)
+
+    if name in index.indexed_pages:
+        character_page = page_base + name.replace(" ", "_")
         page = __scrape(character_page)
-        full_name = " ".join(character_lookup[name.lower()].split("_"))
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
-        embed = Embed(title=full_name)
+        embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
         await ctx.send(embed=embed)
-    except KeyError:
+    else:
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="Character not found :sob:", value="{} could not be found on the Wiki".format(name))
         await ctx.send(embed=embed)
 
 
 @bot.command()
-async def npc(ctx, name):
-    try:
-        npc_page = page_base + npc_lookup[name.lower()]
+async def npc(ctx, *name):
+    global index
+    if len(name) > 1:
+        name = " ".join(name)
+
+    if name in index.indexed_pages:
+        npc_page = page_base + name.replace(" ", "_")
         page = __scrape(npc_page)
-        full_name = " ".join(npc_lookup[name.lower()].split("_"))
         ret_str = str("""```bash\n\"{}\"```""").format(page.npc_overview)
-        embed = Embed(title=full_name)
+        embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
         await ctx.send(embed=embed)
-    except KeyError:
+    else:
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="NPC not found :sob:", value="{} could not be found on the Wiki".format(name))
         await ctx.send(embed=embed)
 
 
 @bot.command()
-async def location(ctx, name):
-    try:
-        location_page = page_base + location_lookup[name.lower()]
+async def location(ctx, *name):
+    global index
+    if len(name) > 1:
+        name = " ".join(name)
+
+    if name in index.indexed_pages:
+        location_page = page_base + name.replace(" ", "_")
         page = __scrape(location_page)
-        full_name = " ".join(location_lookup[name.lower()].split("_"))
         ret_str = str("""```bash\n\"{}\"```""").format(page.location_overview)
-        embed = Embed(title=full_name)
+        embed = Embed(title=name)
         embed.add_field(name="Overview", value=ret_str)
         await ctx.send(embed=embed)
-    except KeyError:
+    else:
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="Location not found :sob:", value="{} could not be found on the Wiki".format(name))
+        await ctx.send(embed=embed)
+
+
+# @bot.command()
+# async def dump(ctx, *args):
+#     global index
+#     print("Sections\n", "-"*25, "\n", index.indexed_pages)
+#     ret_str = str("""```bash\n\"{}\"```""").format("Page Index dumped to console.")
+#     embed = Embed(title="Page Index")
+#     embed.add_field(name="Status", value=ret_str)
+#     await ctx.send(embed=embed)
+
+
+@bot.command()
+async def update(ctx, *args):
+    try:
+        global index
+        index = update_index()
+        ret_str = str("""```bash\n\"{}\"```""").format("Page Index update completed.")
+        embed = Embed(title="Page Index")
+        embed.add_field(name="Status", value=ret_str)
+        await ctx.send(embed=embed)
+    except:
+        ret_str = str("""```bash\n\"{}\"```""").format("Page Index update FAILED.")
+        embed = Embed(title="Page Index")
+        embed.add_field(name="Status", value=ret_str)
         await ctx.send(embed=embed)
 
 

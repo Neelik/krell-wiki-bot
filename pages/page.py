@@ -17,18 +17,20 @@ class Page(object):
     def soup_pretty(self):
         return self.soup_raw.prettify()
 
+    def __overview_text(self):
+        content = self.soup_raw.find("div", {"class": "mw-parser-output"})
+        overview = content.find_all("p")
+        if len(overview) > 0:
+            return overview[0].get_text()
+        return ""
+
     @property
     def character_overview(self):
         """
             Parses the soup for the Overview text of a character
         """
 
-        content = self.soup_raw.find("div", {"class": "mw-parser-output"})
-        overview = content.find_all("p")
-        if len(overview) > 0:
-            return overview[0].get_text()
-
-        return ""
+        return self.__overview_text()
 
     @property
     def npc_overview(self):
@@ -36,12 +38,7 @@ class Page(object):
             Parses the soup for the Overview text of a character
         """
 
-        content = self.soup_raw.find("div", {"class": "mw-parser-output"})
-        overview = content.find_all("p")
-        if len(overview) > 0:
-            return overview[0].get_text()
-
-        return ""
+        return self.__overview_text()
 
     @property
     def location_overview(self):
@@ -49,11 +46,10 @@ class Page(object):
             Parses the soup for the Overview text of a character
         """
 
-        content = self.soup_raw.find("div", {"class": "mw-parser-output"})
-        overview = content.find_all("p")
-        if len(overview) > 0:
-            return overview[0].get_text()
+        return self.__overview_text()
 
+    @property
+    def site_index(self):
         return ""
 
     def save_soup(self):
