@@ -2,6 +2,7 @@ from discord import Embed
 from discord.ext import commands
 from index import update_index
 from pages.page import Page
+from titlecase import titlecase
 import requests
 import sys
 import os
@@ -33,17 +34,22 @@ async def check(ctx, *name):
     else:
         name = name[0]
 
-    if name.lower() in index.indexed_pages:
-        page_uri = page_base + name.replace(" ", "_")
+    # Set the name up for index checking
+    for_check = name.lower()
+    name_cased = titlecase(for_check)
+    uri_encoded = name_cased.replace(" ", "_")
+
+    if for_check in index.indexed_pages:
+        page_uri = page_base + uri_encoded
         page = __scrape(page_uri)
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
-        embed = Embed(title=name, description=f"[Full Page]({page_uri})")
+        embed = Embed(title=name_cased, description=f"[Full Page]({page_uri})")
         embed.add_field(name="Overview", value=ret_str)
         index = update_index()
         await ctx.send(embed=embed)
     else:
         embed = Embed(title="Oops! Missing Info")
-        embed.add_field(name="Character not found :sob:", value="{} could not be found on the Wiki".format(name))
+        embed.add_field(name="Character not found :sob:", value="{} could not be found on the Wiki".format(name_cased))
         await ctx.send(embed=embed)
 
 
