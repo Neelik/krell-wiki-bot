@@ -25,8 +25,8 @@ def __scrape(url):
     return page
 
 
-@bot.command()
-async def character(ctx, *name):
+@bot.command(aliases=["history", "turnpage", "reveal"])
+async def check(ctx, *name):
     global index
     if len(name) > 1:
         name = " ".join(name)
@@ -34,10 +34,10 @@ async def character(ctx, *name):
         name = name[0]
 
     if name.lower() in index.indexed_pages:
-        character_page = page_base + name.replace(" ", "_")
-        page = __scrape(character_page)
+        page_uri = page_base + name.replace(" ", "_")
+        page = __scrape(page_uri)
         ret_str = str("""```bash\n\"{}\"```""").format(page.character_overview)
-        embed = Embed(title=name, description=f"[Full Page]({character_page})")
+        embed = Embed(title=name, description=f"[Full Page]({page_uri})")
         embed.add_field(name="Overview", value=ret_str)
         index = update_index()
         await ctx.send(embed=embed)
@@ -48,57 +48,13 @@ async def character(ctx, *name):
 
 
 @bot.command()
-async def npc(ctx, *name):
+@commands.is_owner()
+async def dump(ctx, *args):
     global index
-    if len(name) > 1:
-        name = " ".join(name)
-    else:
-        name = name[0]
-
-    if name.lower() in index.indexed_pages:
-        npc_page = page_base + name.replace(" ", "_")
-        page = __scrape(npc_page)
-        ret_str = str("""```bash\n\"{}\"```""").format(page.npc_overview)
-        embed = Embed(title=name, description=f"[Full Page]({npc_page})")
-        embed.add_field(name="Overview", value=ret_str)
-        index = update_index()
-        await ctx.send(embed=embed)
-    else:
-        embed = Embed(title="Oops! Missing Info")
-        embed.add_field(name="NPC not found :sob:", value="{} could not be found on the Wiki".format(name))
-        await ctx.send(embed=embed)
-
-
-@bot.command()
-async def location(ctx, *name):
-    global index
-    if len(name) > 1:
-        name = " ".join(name)
-    else:
-        name = name[0]
-
-    if name.lower() in index.indexed_pages:
-        location_page = page_base + name.replace(" ", "_")
-        page = __scrape(location_page)
-        ret_str = str("""```bash\n\"{}\"```""").format(page.location_overview)
-        embed = Embed(title=name, description=f"[Full Page]({location_page})")
-        embed.add_field(name="Overview", value=ret_str)
-        index = update_index()
-        await ctx.send(embed=embed)
-    else:
-        embed = Embed(title="Oops! Missing Info")
-        embed.add_field(name="Location not found :sob:", value="{} could not be found on the Wiki".format(name))
-        await ctx.send(embed=embed)
-
-
-# @bot.command()
-# async def dump(ctx, *args):
-#     global index
-#     print("Sections\n", "-"*25, "\n", index.indexed_pages)
-#     ret_str = str("""```bash\n\"{}\"```""").format("Page Index dumped to console.")
-#     embed = Embed(title="Page Index")
-#     embed.add_field(name="Status", value=ret_str)
-#     await ctx.send(embed=embed)
+    ret_str = str("""```bash\n\"{}\"```""").format("Page Index dumped to console.")
+    embed = Embed(title="Page Index")
+    embed.add_field(name="Status", value=ret_str)
+    await ctx.send(embed=embed)
 
 
 @bot.command()
