@@ -1,4 +1,4 @@
-from discord import Embed, Colour
+from discord import Embed, Colour, Member
 from discord.ext import commands
 from index import update_index
 from pages.page import Page
@@ -55,6 +55,13 @@ async def check(ctx, *name):
         embed = Embed(title="Oops! Missing Info")
         embed.add_field(name="Character not found :sob:", value="{} could not be found on the Wiki".format(name_cased))
         await ctx.send(embed=embed)
+
+
+@bot.command()
+@commands.is_owner()
+async def roles(ctx, member: Member):
+    member_roles = member.roles
+    await ctx.send(member_roles[1:])
 
 
 @bot.command()
