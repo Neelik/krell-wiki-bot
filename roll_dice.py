@@ -32,6 +32,9 @@ def roll_dice(dice):
 
     total += int(modifier)
 
-    results = " + ".join(rolls)
-    results = f"{results} + {modifier} = {total}"
+    if len(rolls) <= 10:
+        results = " + ".join(rolls)
+        results = f"{results} + {modifier} = {total}"
+    else:
+        results = f"{dice} = {total}"
     return results
